@@ -1,0 +1,19 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: php-storage
+provisioner: kubernetes.io/gce-pd  # Use the appropriate provisioner
+parameters:
+  type: pd-standard
+reclaimPolicy: Delete
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: postgres-storage
+provisioner: kubernetes.io/gce-pd  # Use the appropriate provisioner
+parameters:
+  type: pd-ssd
+reclaimPolicy: Retain
