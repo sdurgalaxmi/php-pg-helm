@@ -4,7 +4,7 @@
 app:
   name: php-app
   image:
-    repository: sdurgalaxmi/php-pg-docker-app:latest
+    repository: sdurgalaxmi/php-pg-docker-app
     tag: latest
   replicas: 1
   service:
@@ -27,14 +27,14 @@ app:
 ---
 # PostgreSQL settings
 postgres:
-  name: db
+  name: postgres-service 
   image:
     repository: postgres
     tag: "15"  # Specify PostgreSQL version 15
   database: testdb 
   user: user 
   password: password
-  dbHost: db  # The name of the PostgreSQL service
+  dbHost: postgres-service  # The name of the PostgreSQL service
   pvc:
     enabled: true
     storage: 2Gi
