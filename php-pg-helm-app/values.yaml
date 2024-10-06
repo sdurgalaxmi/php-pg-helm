@@ -4,7 +4,7 @@
 app:
   name: php-app
   image:
-    repository: sdurgalaxmi/php-postgres-app
+    repository: sdurgalaxmi/php-pg-docker-app:latest
     tag: latest
   replicas: 1
   service:
