@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/sdurgalaxmi/php-pg-helm.git
     targetRevision: HEAD
-    path: php-postgres-app-2
+    path: php-pg-helm-app
   destination: 
     server: https://kubernetes.default.svc
     namespace: myphppgapp
