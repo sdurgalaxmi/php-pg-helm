@@ -1,0 +1,42 @@
+# Default values for your Helm chart
+
+# Application settings
+app:
+  name: php-app
+  image:
+    repository: sdurgalaxmi/php-postgres-app
+    tag: latest
+  replicas: 1
+  service:
+    type: NodePort
+    port: 80
+    nodePort: 30080
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "500m"
+    limits:
+      memory: "512Mi"
+      cpu: "1"
+  pvc:
+    enabled: true
+    storage: 1Gi  # Specify the size of the PVC
+    accessMode: ReadWriteOnce
+    hostPath: "/mnt/data/php"  # Optional: Specify if using hostPath
+
+---
+# PostgreSQL settings
+postgres:
+  name: db
+  image:
+    repository: postgres
+    tag: "15"  # Specify PostgreSQL version 15
+  database: testdb 
+  user: user 
+  password: password
+  dbHost: db  # The name of the PostgreSQL service
+  pvc:
+    enabled: true
+    storage: 2Gi
+    accessMode: ReadWriteOnce
+    hostPath: "/mnt/data/postgres"  # Path on the host node (if applicable)  
