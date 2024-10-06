@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-app
+spec:
+  replicas: {{ .Values.app.replicas }}  # Use value from values.yaml
+  selector:
+    matchLabels:
+      app: php-app
+  template:
+    metadata:
+      labels:
+        app: php-app
+    spec:
+      containers:
+      - name: php-app
+        image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}  # Use values from values.yaml
+        ports:
+        - containerPort: {{ .Values.app.service.port }}  # Use port from values.yaml
+        env:
+          - name: DB_HOST
+            value: "db"  # Reference to DB host in values.yaml
+          - name: DB_USER
+            value: user  # Reference to DB user in values.yaml
+          - name: DB_PASSWORD
+            value: password  # Reference to DB password in values.yaml
+          - name: DB_NAME
+            value: testdb  # Reference to DB name in values.yaml
+        volumeMounts:
+          - name: php-storage
+            mountPath: /var/www/html/my-php-app
+        resources:
+          requests:
+            memory: {{ .Values.app.resources.requests.memory }}  # Reference to memory requests
+            cpu: {{ .Values.app.resources.requests.cpu }}  # Reference to CPU requests
+          limits:
+            memory: {{ .Values.app.resources.limits.memory }}  # Reference to memory limits
+            cpu: {{ .Values.app.resources.limits.cpu }}  # Reference to CPU limits
+      volumes:
+        - name: php-storage
+          persistentVolumeClaim:
+            claimName: php-pvc  # Reference to the PVC for the PHP application
+---
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: php-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete 
+  storageClassName: php-storage
+  hostPath:
+    path: /mnt/data/php  # Update this path as needed
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: php-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: php-storage
