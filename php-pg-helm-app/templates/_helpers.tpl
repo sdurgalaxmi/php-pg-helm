@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "php-pg-helm.name" -}}
+{{- define "php-pg-helm-app.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "php-pg-helm.fullname" -}}
+{{- define "php-pg-helm-app.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "php-pg-helm.chart" -}}
+{{- define "php-pg-helm-app.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "php-pg-helm.labels" -}}
-helm.sh/chart: {{ include "php-pg-helm.chart" . }}
-{{ include "php-pg-helm.selectorLabels" . }}
+{{- define "php-pg-helm-app.labels" -}}
+helm.sh/chart: {{ include "php-pg-helm-app.chart" . }}
+{{ include "php-pg-helm-app.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "php-pg-helm.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "php-pg-helm.name" . }}
+{{- define "php-pg-helm-app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "php-pg-helm-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "php-pg-helm.serviceAccountName" -}}
+{{- define "php-pg-helm-app.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "php-pg-helm.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "php-pg-helm-app.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
