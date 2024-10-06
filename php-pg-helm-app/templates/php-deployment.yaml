@@ -19,7 +19,7 @@ spec:
         - containerPort: {{ .Values.app.service.port }}  # Use port from values.yaml
         env:
           - name: DB_HOST
-            value: "db"  # Reference to DB host in values.yaml
+            value: "postgres-service"  # Reference to DB host in values.yaml
           - name: DB_USER
             value: user  # Reference to DB user in values.yaml
           - name: DB_PASSWORD
